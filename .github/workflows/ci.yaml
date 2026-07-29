@@ -33,6 +33,6 @@ jobs:
         python train_model.py
 
     - name: Upload Model Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ml-artifact-${{ matrix.python-version }}-${{ github.run_id }}
