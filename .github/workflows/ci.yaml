@@ -1,0 +1,38 @@
+name: MLOPS Developed CI TO AUTOMATE DATASCIENTISTS WORK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Train and Save Model
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11, 3.12]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Train Model
+      run: |
+        python train_model.py
+
+    - name: Upload Model Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ml-artifact-${{ matrix.python-version }}-${{ github.run_id }}
